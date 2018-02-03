@@ -17,12 +17,15 @@ object SparkSqlDemo {
 
   def main(args: Array[String]): Unit = {
 
-    if (args.length < 1) {
-      System.err.println("Usage: SparkSqlDemo <tableName> ")
+    if (args.length < 2) {
+      System.err.println("Usage: SparkSqlDemo <> ")
       System.exit(-1)
     }
+    //库名
+    val dbName = args(0)
+
     // 表名
-    val tableName = args(0)
+    val tableName = args(1)
 
     /**
       * 此处不用设置AppName和Master参数, 数栖平台提交作业会自动添加.
@@ -36,9 +39,9 @@ object SparkSqlDemo {
 
     // 注册临时UDF
     // spark.udf.register("demo_udf", (x: String) => "Hello," + x)
-
+    tableName
     // 查询Hive表数据
-    val df = spark.sql(s"select * from ${tableName} limit 3")
+    val df = spark.sql(s"select * from ${dbName}.${tableName} limit 3")
 
     // 打印输出数据
     df.show(false)
